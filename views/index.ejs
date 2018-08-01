@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+          Guest Book
+        </title>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />
+    </head>
+    <body class="container" >
+    <div class="card">
+        <div class="card-header">
+            <h1>
+                Guest Books 
+            </h1>   
+        </div>
+        <div class="card-body">
+        
+            <a href="/entry" class="btn btn-primary pull-right">
+                Write in Guest Book
+            </a>
+        
+        </div>
+        
+    </div>
+    <h1>Guest Book List</h1>
+    <% entries.forEach(function(entry){ %>
+        <div class="card">
+                <div class="card-header">
+                  <%=entry.name%>
+                </div>
+                <div class="card-body">
+                  <%=entry.comments%>
+                </div>
+        </div>
+    <%})%>
+   
+    </body>
+</html>

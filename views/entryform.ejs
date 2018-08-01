@@ -1,0 +1,42 @@
+<html>
+    <head>
+            <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' />
+
+        <title>
+            Entry For Guest Book
+        </title>
+    </head>
+    <body class="container">
+    <div class="row">
+        <div class="col-sm-8">
+        <div class="card">
+                    <div class="card-header">
+                       <h1>
+                            Entry for Guest Details
+                       </h1> 
+                    </div>
+                    <div class="card-body">
+                    <div class="card-title">
+                       <strong>
+                           Please Fill the Form
+                       </strong> 
+                    </div>
+                <form action="/entry" method="POST">
+                     <div class="form-group">
+                        <label>Name :</label>
+                        <input class="form-control col-sm-6" name="name" placeholder="Enter User Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Comments:</label>
+                        <input class="form-control col-sm-6" name="comments" placeholder="Enter Commnets .. " required >
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-lg" value="Save Details.">
+                </form>
+                    
+                    </div>
+            </div>
+        </div>
+    </div>
+       
+    </body>
+</html>
