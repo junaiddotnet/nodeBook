@@ -25,6 +25,20 @@ app.locals.entries = entries;
 // set body parser middle wear 
 app.use(bodyparser.urlencoded({extended:false}));
 
+app.get('/delete',function(req,res){
+    if (req.query.id!=undefined)
+    {
+
+        client.del(req.query.id,function(err,response){
+            if (response==1)
+            {
+                console.log('deleted succesfully '+req.query.id);
+            }
+        });
+        res.redirect('/');
+    }
+    console.log('delete command ......');
+});
 app.get('/',function(req,res){
   console.log('/ get called');
     client.keys('*',function(err,replies){
@@ -37,7 +51,7 @@ app.get('/',function(req,res){
     {
         console.log('Length of array is '+entries.length);
         entries.length=0;
-        
+        console.log('after setting length to 0 '+entries.length);
         replies.forEach(function (reply, index) {
            // console.log("Reply " + index + ": " + reply.toString());
             
@@ -67,7 +81,22 @@ app.get('/',function(req,res){
    
     res.render('index');
 });
+app.get('/edit',function(req,res){
 
+    client.hgetall(req.query.id,function(err,response){
+        if (err)
+        {
+            console.log('error in edit fetch operation ...');
+        }
+        else
+        {
+            let entry  = response;
+            res.render('editform',{dataValues:entry});
+        }
+    });
+   // res.render('editform';
+    console.log('Edit node is called ..'+req.query.id);
+});
 app.get('/entry',function(req,res){
     res.render('entryform');
 });
@@ -85,7 +114,7 @@ app.post('/entry',function(req,res){
         client.hmset(name,[
             'name',name,
             'comments',comments,
-            'pubdate',new Date()
+            'pubdate',new Date().toDateString()
         ],function(err,reply){
             if (err)
             {

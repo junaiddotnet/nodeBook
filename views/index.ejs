@@ -36,7 +36,15 @@
                     <blockquote>
                          <%=entry.comments%>
                     </blockquote>
-                 
+                    <div class="float-right">
+                           
+                        <a href="/delete?id=<%=entry.name%>" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                 |
+                 <div class="float-right">
+                           
+                        <a href="/edit?id=<%=entry.name%>" class="btn btn-success btn-sm">Edit</a>
+                    </div>
                 </div>
         </div>
     <%})%>
