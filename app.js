@@ -1,6 +1,15 @@
 const express  = require('express');
 const path  = require('path');
 const bodyparser  = require('body-parser');
+const redis   = require('redis')
+
+
+// set up the redis
+
+const client = redis.createClient();
+client.on('connect',function(){
+    console.log('redis is Connected ....');
+});
 
 var entries=[];
 
@@ -17,6 +26,45 @@ app.locals.entries = entries;
 app.use(bodyparser.urlencoded({extended:false}));
 
 app.get('/',function(req,res){
+  console.log('/ get called');
+    client.keys('*',function(err,replies){
+    
+    if (err)
+    {
+        console.log('Error while reading keys ...'+err);
+    }
+    else
+    {
+        console.log('Length of array is '+entries.length);
+        entries.length=0;
+        
+        replies.forEach(function (reply, index) {
+           // console.log("Reply " + index + ": " + reply.toString());
+            
+           client.hgetall(reply.toString(),function(err,response){
+            if (err)
+            {
+                console.log('Error reading data'+err);
+            }
+            else
+            {
+                console.log(reply.toString());
+                
+                entries.push({
+                    name:response.name,
+                    comments:response.comments,
+                    pubdate:response.pubdate
+                });
+            }
+        });
+
+        }); // end of else statment 
+        app.locals.entries=entries;
+    }
+  
+
+  });
+   
     res.render('index');
 });
 
@@ -31,13 +79,27 @@ app.post('/entry',function(req,res){
     }
     else
     {
-        entries.push({
-            name:req.body.name,
-            comments :req.body.comments,
-            pubdate:new Date()
+        let name  = req.body.name;
+        let comments  = req.body.comments;
+      
+        client.hmset(name,[
+            'name',name,
+            'comments',comments,
+            'pubdate',new Date()
+        ],function(err,reply){
+            if (err)
+            {
+                console.log('Error while saving data to redis'+err);
+                
+            }
+            else
+            {
+                console.log('Data Saved '+reply);
+                res.redirect('/');
+
+            }
         });
         
-      res.redirect('/');
     }
 });
 
