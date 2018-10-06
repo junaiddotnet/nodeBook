@@ -10,7 +10,7 @@ const client = redis.createClient();
 client.on('connect',function(){
     console.log('redis is Connected ....');
 });
-
+console.log('docler');
 var entries=[];
 
 // set the app object
